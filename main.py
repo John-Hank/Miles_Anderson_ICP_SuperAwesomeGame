@@ -6,8 +6,12 @@
 # Input - keys, buttons, voice, mouse, touch, breath, movement, control stick
 # Process - input processed (direction of control, magnitude)
 # Output - Draw new frames pixels, sounds, haptics (senses)
-# (Store) 
+# (Store)
 
+# GOALS:
+# RULES:
+# FEEDBACK
+# FREEDOM: 
 
 import pygame as pg
 from os import path
@@ -63,9 +67,22 @@ class Game:
     # this block of code handles processing of changes based on input
     def update(self):
         self.all_sprite.update()
+
+        #draws text on screen anywhere based on x and y cords
+    def draw_text(self,text,size,color,x,y):
+        font_name = pg.font.match_font('arial') 
+        #instansiates the font class
+        font = pg.font.Font(font_name,size)
+        text_surface = font.render(text,True,color)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x,y)
+        self.screen.blit(text_surface,text_rect)
+
+                  
     def draw(self):
         self.screen.fill(BLUE)
         self.all_sprite.draw(self.screen)
+        self.draw_text("Frames per second: " + str(floor(1/self.dt)), 24,WHITE, WIDTH/2,HEIGHT/4)
         pg.display.flip()
 
 if __name__ == "__main__": #mc
