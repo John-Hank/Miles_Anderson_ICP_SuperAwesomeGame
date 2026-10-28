@@ -3,6 +3,7 @@ from pygame.sprite import Sprite
 from settings import *
 from utils import *
 from os import path
+from random import *
 
 vec = pg.math.Vector2
 
@@ -169,6 +170,34 @@ class Mob(Sprite):
         self.hit_rect.centery = self.pos.y
         collide_with_walls(self, self.game.all_walls, 'y')
         self.rect.center = self.hit_rect.center
+
+class Particle(Sprite):
+    def __init__(self,game,x,y):
+        self.groups = game.all_sprites, game.all_particles
+        Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((TILESIZE/4, TILESIZE/4))
+        self.image.fill(GREEN)
+        self.rect = self.image.get_rect()
+        self.vel = vec(randint(-180,180),randint(-180,180))
+        self.pos = vec(x,y)
+        self.speed = 15
+        self.rect.center = self.pos
+        self.cooldown = Cooldown()
+        self.cooldown.event_time = floor(pg.time.get_ticks()/1000)
+        print("made particle")
+        print(self.rect.x)
+        print(self.rect.y)
+
+    def update(self):
+        self.countdown.ticking()
+        self.pos += self.vel * self.speed * self.game.dt
+        if self.countdown.delta > 1:
+            self.kill()
+            print(str(len(self.game.all_particles)))
+        self.rect.x = self.pos.x
+        self.rect.y = self.pos.y
+
    
 class Wall(Sprite):
     def __init__(self, game, x, y):
