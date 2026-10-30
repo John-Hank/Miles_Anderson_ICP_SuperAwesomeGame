@@ -108,6 +108,16 @@ class Player(Sprite):
         self.vel += self.acc
 
 
+ # ILL FIGURE WHATEvere this is out lareter
+        # self.rect.center = self.pos
+        self.pos += self.vel * self.game.dt + 0.5 *self.acc
+        # self.pos += self.vel +0.5 * self.acc
+        # tile.hits = pg.sprite.spritecollide*self,self.game.all_tiles, False)
+        # if tile_hits:
+        #     if tile_hits[0].variant == "ice":
+        #         self.cofric += .05
+
+
 
         self.rect.center = self.pos
         # self.pos += self.vel * self.game.dt
@@ -195,7 +205,7 @@ class Particle(Sprite):
         self.rect = self.image.get_rect()
         self.vel = vec(randint(-180,180),randint(-180,180))
         self.pos = vec(x,y)
-        self.speed = 15
+        self.speed = 1
         self.rect.center = self.pos
         self.cooldown = Cooldown()
         self.cooldown.event_time = floor(pg.time.get_ticks()/1000)
