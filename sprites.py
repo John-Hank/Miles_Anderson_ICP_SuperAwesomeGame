@@ -45,7 +45,9 @@ class Player(Sprite):
         self.image = self.spritesheet.get_image(0,0,TILESIZE, TILESIZE)
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
+        # player montion atribbutes
         self.vel = vec(0,0)
+        self.acc = vec(0,0)
         self.pos = vec(x,y) * TILESIZE
         self.hit_rect = PLAYER_HIT_RECT
         self.current_frame = 0
@@ -60,13 +62,17 @@ class Player(Sprite):
         self.vel = vec(0, 0)
         keys = pg.key.get_pressed()
         if keys[pg.K_a]:
-            self.vel.x = -PLAYER_SPEED
+            # self.vel.x = -PLAYER_SPEED
+            self.acc.x = -5
         if keys[pg.K_d]:
-            self.vel.x = PLAYER_SPEED
+            # self.vel.x = PLAYER_SPEED
+            self.acc.x = 5
         if keys[pg.K_w]:
-            self.vel.y = -PLAYER_SPEED
+            # self.vel.y = -PLAYER_SPEED
+            self.acc.y = -5
         if keys[pg.K_s]:
-            self.vel.y = PLAYER_SPEED
+            # self.vel.y = PLAYER_SPEEDself.acc.x = 5
+            self.acc.y = 5
         if self.vel.x != 0 and self.vel.y != 0:
             self.vel *= 0.7071
     def jump(self):
@@ -95,9 +101,17 @@ class Player(Sprite):
 
 
     def update(self):
+        self.acc = vec(0,9.8)
         self.get_keys()
+        self.acc.x += self.vel.x * PLAYER_FRIC
+        self.acc.y += self.vel.y * PLAYER_FRIC
+        self.vel += self.acc
+
+
+
         self.rect.center = self.pos
-        self.pos += self.vel * self.game.dt
+        # self.pos += self.vel * self.game.dt
+        self.pos += self.vel + 0.5 * self.acc
         hits = pg.sprite.spritecollide(self, self.game.all_coins, True)
         if hits:
             self.coins += 1
